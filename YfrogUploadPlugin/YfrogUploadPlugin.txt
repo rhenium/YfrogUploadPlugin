@@ -1,0 +1,5 @@
+﻿yfrog Upload Plugin 0.6
+作者：@re4k
+
+Krile用のyfrogアップロードプラグインです。
+テストとかしてないです。

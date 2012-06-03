@@ -1,0 +1,3 @@
+[submodule "Mystique"]
+	path = Mystique
+	url = https://github.com/karno/Mystique.git
