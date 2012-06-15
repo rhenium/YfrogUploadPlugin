@@ -5,6 +5,8 @@ using System.Xml.Linq;
 using Dulcet.Network;
 using Dulcet.Twitter.Credential;
 using Dulcet.Util;
+using System.Xml;
+using System.Runtime.Serialization.Json;
 
 namespace YfrogUploader
 {
@@ -41,14 +43,18 @@ namespace YfrogUploader
             var req = Http.CreateRequest(new Uri(UploadApiUrl), "POST", contentType: "application/x-www-form-urlencoded");
 
             // use OAuth Echo
-            provider.MakeOAuthEchoRequest(ref req);
+            provider.MakeOAuthEchoRequest(ref req, null, "https://api.twitter.com/1/account/verify_credentials.xml");
             // verify_credentials.json だとレスポンスまでJSONになっちゃう？
-            req.Headers["X-Auth-Service-Provider"] = "https://api.twitter.com/1/account/verify_credentials.xml";
+            //req.Headers["X-Auth-Service-Provider"] = "https://api.twitter.com/1/account/verify_credentials.xml";
 
             List<SendData> sd = new List<SendData>();
             sd.Add(new SendData("key", apiKey));
             sd.Add(new SendData("media", file: mediaFilePath));
 
+            /*var doc = Http.WebUpload<XDocument>(req, sd, Encoding.UTF8, (s) =>
+            {
+                return XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(s, XmlDictionaryReaderQuotas.Max));
+            });*/
             var doc = Http.WebUpload<XDocument>(req, sd, Encoding.UTF8, (s) => XDocument.Load(s));
             if (doc.ThrownException != null)
                 throw doc.ThrownException;
