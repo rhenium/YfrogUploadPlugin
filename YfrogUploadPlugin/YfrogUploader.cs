@@ -12,14 +12,8 @@ namespace YfrogUploader
         public string UploadImage(OAuth credential, string path, string comment)
         {
             string url;
-            if (!YfrogApi.UploadToYfrog(credential, _appk, path, out url))
-            {
-                return null;
-            }
-            else
-            {
-                return url;
-            }
+            YfrogApi.UploadToYfrog(credential, _appk, path, out url);
+            return url;
         }
 
         public string ServiceName
